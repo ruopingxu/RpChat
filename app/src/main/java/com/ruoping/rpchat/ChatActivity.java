@@ -1,41 +1,37 @@
 package com.ruoping.rpchat;
-import static com.ruoping.rpchat.Constants.USERNAME_KEY;
-import static com.ruoping.rpchat.Constants.USERS_COLLECTION;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.View;
-import android.widget.TextView;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ruoping.rpchat.Constants.USERNAME_KEY;
+import static com.ruoping.rpchat.Constants.USERS_COLLECTION;
+
 public class ChatActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private final AccountController accountController = new AccountController();
-    SharedPreferences sharedPreferences;
     String username;
     List<String> messages = new ArrayList<>();
 
@@ -43,6 +39,8 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView chatHistoryView;
     RecyclerView.Adapter chatAdapter;
     RecyclerView.LayoutManager chatLayoutManager;
+    Button sendButton;
+    EditText messageInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +52,12 @@ public class ChatActivity extends AppCompatActivity {
 
         chatTitle = findViewById(R.id.chat_title);
 
-        chatHistoryView = findViewById(R.id.chat_history);
-        chatHistoryView.setHasFixedSize(true);
+        setupChatHistory();
 
-        chatLayoutManager = new LinearLayoutManager(this);
-        chatHistoryView.setLayoutManager(chatLayoutManager);
+        messageInput = findViewById(R.id.input_text_msg);
+        sendButton = findViewById(R.id.send_msg_button);
 
-        chatAdapter = new ConversationAdapter(messages);
+        setupListeners();
 
         // load previous data from Firebase
         db = FirebaseFirestore.getInstance();
@@ -69,7 +66,43 @@ public class ChatActivity extends AppCompatActivity {
 
         fetchUserInfo(username);
 
+    }
 
+    private void setupChatHistory() {
+        chatHistoryView = findViewById(R.id.chat_history);
+        chatHistoryView.setHasFixedSize(true);
+
+        chatLayoutManager = new LinearLayoutManager(this);
+        chatHistoryView.setLayoutManager(chatLayoutManager);
+
+        chatAdapter = new ConversationAdapter(messages);
+        chatHistoryView.setAdapter(chatAdapter);
+    }
+    private void setupListeners(){
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendNewMessage();
+            }
+        });
+
+        messageInput.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+                    sendNewMessage();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void sendNewMessage() {
+        String newMessage = messageInput.getText().toString();
+        messages.add(newMessage);
+        chatAdapter.notifyItemInserted(messages.size()-1);
+        messageInput.getText().clear();
     }
 
     private void fetchUserInfo(final String username) {
