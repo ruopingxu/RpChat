@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
@@ -39,16 +40,27 @@ public class ChatActivity extends AppCompatActivity {
     List<String> messages = new ArrayList<>();
 
     TextView chatTitle;
-    RecyclerView chatHistory;
+    RecyclerView chatHistoryView;
+    RecyclerView.Adapter chatAdapter;
+    RecyclerView.LayoutManager chatLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // show content
+        // setup content
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         chatTitle = findViewById(R.id.chat_title);
+
+        chatHistoryView = findViewById(R.id.chat_history);
+        chatHistoryView.setHasFixedSize(true);
+
+        chatLayoutManager = new LinearLayoutManager(this);
+        chatHistoryView.setLayoutManager(chatLayoutManager);
+
+        chatAdapter = new ConversationAdapter(messages);
 
         // load previous data from Firebase
         db = FirebaseFirestore.getInstance();
