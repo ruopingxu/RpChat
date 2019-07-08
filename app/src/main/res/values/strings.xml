@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RpChat</string>
+    <string name="username_hint_text">Username</string>
+    <string name="enter_username_button">Enter</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="dummy_text">helloooo world</string>
+</resources>

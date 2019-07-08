@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "757970506493",
+    "firebase_url": "https://rpchat-9360d.firebaseio.com",
+    "project_id": "rpchat-9360d",
+    "storage_bucket": "rpchat-9360d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757970506493:android:c2cdddfd7017e2fc",
+        "android_client_info": {
+          "package_name": "com.ruoping.rpchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757970506493-gv3th4usld0pgf77vrd5ntcav4vb3034.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDxV5P31IB_LWaf1nIhuRiG7EHO6QIyk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757970506493-gv3th4usld0pgf77vrd5ntcav4vb3034.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
