@@ -22,18 +22,24 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.ruoping.rpchat.Constants.USERNAME_KEY;
 import static com.ruoping.rpchat.Constants.USERS_COLLECTION;
 
 public class ChatActivity extends AppCompatActivity {
+
+    private static final String DUMMY_ID = "DUMMY_CONVO_ID";
+    private final AccountController accountController = new AccountController();
     private FirebaseFirestore db;
 
-    private final AccountController accountController = new AccountController();
     String username;
     List<String> messages = new ArrayList<>();
+    List<Conversation.Message> messageList = new ArrayList<>();
+    Conversation conversation;
 
     TextView chatTitle;
     RecyclerView chatHistoryView;
@@ -52,7 +58,11 @@ public class ChatActivity extends AppCompatActivity {
 
         chatTitle = findViewById(R.id.chat_title);
 
-        setupChatHistory();
+        chatHistoryView = findViewById(R.id.chat_history);
+        chatHistoryView.setHasFixedSize(true);
+
+        chatLayoutManager = new LinearLayoutManager(this);
+        chatHistoryView.setLayoutManager(chatLayoutManager);
 
         messageInput = findViewById(R.id.input_text_msg);
         sendButton = findViewById(R.id.send_msg_button);
@@ -63,23 +73,21 @@ public class ChatActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
         username = intent.getStringExtra(Constants.USERNAME_KEY);
-
         fetchUserInfo(username);
 
+        // TODO: fetch conversation data from Firebase, and pass into constructor
+        Set<String> userSet = new HashSet<String>();
+        userSet.add(username);
+        conversation = new Conversation(DUMMY_ID, messageList, userSet);
+        chatAdapter = new ConversationAdapter(conversation);
+        chatHistoryView.setAdapter(chatAdapter);
     }
 
     /**
      * Build adapter and populate chat UI with previous messages
      */
     private void setupChatHistory() {
-        chatHistoryView = findViewById(R.id.chat_history);
-        chatHistoryView.setHasFixedSize(true);
 
-        chatLayoutManager = new LinearLayoutManager(this);
-        chatHistoryView.setLayoutManager(chatLayoutManager);
-
-        chatAdapter = new ConversationAdapter(messages);
-        chatHistoryView.setAdapter(chatAdapter);
     }
 
     /**
@@ -110,8 +118,8 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void sendNewMessage() {
         String newMessage = messageInput.getText().toString();
-        messages.add(newMessage);
-        chatAdapter.notifyItemInserted(messages.size() - 1);
+        conversation.addMessage(new Conversation.Message(newMessage, "1234", username));
+        chatAdapter.notifyItemInserted(conversation.getLength() - 1);
         messageInput.getText().clear();
     }
 

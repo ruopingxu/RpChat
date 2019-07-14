@@ -19,14 +19,22 @@ public class Conversation {
         memberNames.add(username);
     }
 
-    public void addMessage(String text, String username) {
-        messageList.add(new Message(text, String.valueOf(System.currentTimeMillis()), username));
+    public void addMessage(Message message) {
+        messageList.add(message);
+    }
+
+    public Message getMessage(int index) {
+        return messageList.get(index);
+    }
+
+    public int getLength() {
+        return messageList.size();
     }
 
     public static class Message {
-        public String text;
-        public String timestamp;
-        public String username;
+        public final String text;
+        public final String timestamp;
+        public final String username;
 
         public Message(String text, String timestamp, String username) {
             this.text = text;

@@ -1,6 +1,5 @@
 package com.ruoping.rpchat;
 
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,13 +7,11 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.MessageViewHolder> {
-    private List<String> messages;
+    private Conversation conversation;
 
-    public ConversationAdapter(List<String> messages) {
-        this.messages = messages;
+    public ConversationAdapter(Conversation conversation) {
+        this.conversation = conversation;
     }
 
     @Override
@@ -27,12 +24,12 @@ class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.Messa
 
     @Override
     public void onBindViewHolder(MessageViewHolder vh, int position) {
-        vh.setContent(messages.get(position));
+        vh.setContent(conversation.getMessage(position).text);
     }
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return conversation.getLength();
     }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
