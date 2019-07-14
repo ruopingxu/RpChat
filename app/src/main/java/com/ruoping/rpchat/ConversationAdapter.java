@@ -12,6 +12,7 @@ import java.util.List;
 
 class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.MessageViewHolder> {
     private List<String> messages;
+
     public ConversationAdapter(List<String> messages) {
         this.messages = messages;
     }
@@ -30,7 +31,7 @@ class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.Messa
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return messages.size();
     }
 

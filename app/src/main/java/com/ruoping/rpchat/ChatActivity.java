@@ -85,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
     /**
      * Listeners for Send button, Enter key
      */
-    private void setupListeners(){
+    private void setupListeners() {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +96,7 @@ public class ChatActivity extends AppCompatActivity {
         messageInput.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     sendNewMessage();
                     return true;
                 }
@@ -111,12 +111,13 @@ public class ChatActivity extends AppCompatActivity {
     private void sendNewMessage() {
         String newMessage = messageInput.getText().toString();
         messages.add(newMessage);
-        chatAdapter.notifyItemInserted(messages.size()-1);
+        chatAdapter.notifyItemInserted(messages.size() - 1);
         messageInput.getText().clear();
     }
 
     /**
      * Method for fetching the User object from Firebase
+     *
      * @param username: the string username, also the ID of the user
      */
     private void fetchUserInfo(final String username) {

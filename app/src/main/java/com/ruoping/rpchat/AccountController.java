@@ -34,6 +34,7 @@ public class AccountController {
 
     /**
      * Store user's data object on device
+     *
      * @param username
      * @param snapshot
      */
@@ -44,7 +45,8 @@ public class AccountController {
     /**
      * Save a new user to Firebase
      * Does nothing if user already exists
-     * @param db: instance of database being used
+     *
+     * @param db:   instance of database being used
      * @param user: map object containing all user data
      */
     protected void addNewUser(FirebaseFirestore db, Map<String, Object> user) {
@@ -66,6 +68,7 @@ public class AccountController {
 
     /**
      * Fetch user's data object from Firebase
+     *
      * @param username
      */
     protected void getUserData(String username) {

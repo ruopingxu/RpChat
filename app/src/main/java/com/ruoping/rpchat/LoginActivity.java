@@ -13,8 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class LoginActivity extends AppCompatActivity {
     private final String TAG = "LoginActivity";
-
-
+    
     EditText usernameInput;
     Button usernameInputButton;
 
