@@ -19,6 +19,9 @@ import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * Class for handling saving and fetching User account info.
+ */
 public class AccountController {
     private final String TAG = "AccountController";
 
@@ -29,11 +32,21 @@ public class AccountController {
 //        sharedPrefs = getPreferences(MODE_PRIVATE);
     }
 
+    /**
+     * Store user's data object on device
+     * @param username
+     * @param snapshot
+     */
     protected void storeUserDataOnDevice(String username, QueryDocumentSnapshot snapshot) {
-
+        // TODO: Find where to put the data, if needed
     }
 
-
+    /**
+     * Save a new user to Firebase
+     * Does nothing if user already exists
+     * @param db: instance of database being used
+     * @param user: map object containing all user data
+     */
     protected void addNewUser(FirebaseFirestore db, Map<String, Object> user) {
         db.collection("users")
                 .add(user)
@@ -51,6 +64,10 @@ public class AccountController {
                 });
     }
 
+    /**
+     * Fetch user's data object from Firebase
+     * @param username
+     */
     protected void getUserData(String username) {
         QueryDocumentSnapshot data;
         Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).get();

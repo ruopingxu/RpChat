@@ -8,6 +8,9 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * First activity shown to user, allows login
+ */
 public class LoginActivity extends AppCompatActivity {
     private final String TAG = "LoginActivity";
 

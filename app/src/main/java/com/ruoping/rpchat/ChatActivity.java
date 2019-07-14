@@ -45,7 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setup content
+        // setup UI content
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,6 +68,9 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Build adapter and populate chat UI with previous messages
+     */
     private void setupChatHistory() {
         chatHistoryView = findViewById(R.id.chat_history);
         chatHistoryView.setHasFixedSize(true);
@@ -78,6 +81,10 @@ public class ChatActivity extends AppCompatActivity {
         chatAdapter = new ConversationAdapter(messages);
         chatHistoryView.setAdapter(chatAdapter);
     }
+
+    /**
+     * Listeners for Send button, Enter key
+     */
     private void setupListeners(){
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +105,9 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method for putting text from input box into the Chat History view
+     */
     private void sendNewMessage() {
         String newMessage = messageInput.getText().toString();
         messages.add(newMessage);
@@ -105,6 +115,10 @@ public class ChatActivity extends AppCompatActivity {
         messageInput.getText().clear();
     }
 
+    /**
+     * Method for fetching the User object from Firebase
+     * @param username: the string username, also the ID of the user
+     */
     private void fetchUserInfo(final String username) {
         Task<QuerySnapshot> query = db.collection(USERS_COLLECTION).whereEqualTo(USERNAME_KEY, username).get();
         query.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
